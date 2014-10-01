@@ -1,5 +1,6 @@
 *~
 *.pdb
+*.sdf
 functions.h
 /Debug
 /Release
