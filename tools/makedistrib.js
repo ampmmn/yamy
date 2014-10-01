@@ -28,7 +28,7 @@ if (fso == null) {
 }
 
 var shell = WScript.CreateObject("Shell.Application");
-if (fso == null) {
+if (shell == null) {
 	throw new Error("can't create Shell Application Object!");
 }
 
@@ -50,7 +50,7 @@ var PackFile = function(dir, name) {
 	RemoveFile(targetDir, pkgFile);
 	throw new Error("can't pack " + path + "!");
     }
-    var item = shell.NameSpace(fso.GetAbsolutePathName(path) + "\\..\\").ParseName(name);
+    var item = shell.NameSpace(fso.GetAbsolutePathName(dir)).ParseName(name);
     var count = targetZip.Items().Count;
     targetZip.CopyHere(item);
     while (targetZip.Items().Count != count + 1) {

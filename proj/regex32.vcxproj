@@ -62,7 +62,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Lib>
-      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\libboost_regex-mt-sgd-$(BOOST_MAJOR).lib</OutputFile>
+      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\lib\libboost_regex-vc120-mt-sgd-$(BOOST_MAJOR).lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,7 +83,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Lib>
-      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\libboost_regex-mt-s-$(BOOST_MAJOR).lib</OutputFile>
+      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\lib\libboost_regex-vc120-mt-s-$(BOOST_MAJOR).lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

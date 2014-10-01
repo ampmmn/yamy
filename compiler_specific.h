@@ -21,7 +21,7 @@
 #    pragma warning(disable : 4061 4100 4132 4552 4701 4706 4786)
 
 #    define setmode _setmode
-#    define for if (false) ; else for
+//#    define for if (false) ; else for
 
 #    define stati64_t _stati64
 

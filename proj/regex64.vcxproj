@@ -87,7 +87,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Lib>
-      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\libboost_regex-mt-sgd-$(BOOST_MAJOR).lib</OutputFile>
+      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\lib\libboost_regex-vc120-mt-sgd-$(BOOST_MAJOR).lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -111,7 +111,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Lib>
-      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\libboost_regex-mt-s-$(BOOST_MAJOR).lib</OutputFile>
+      <OutputFile>ext_lib$(CPUBIT)\$(Configuration)\lib\libboost_regex-vc120-mt-s-$(BOOST_MAJOR).lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -123,12 +123,6 @@
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)makeregex.bat;%(Outputs)</Outputs>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="regex32.vcxproj">
-      <Project>{2376fa78-c8b7-4ed0-b4e3-b5ad778a8c0f}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
