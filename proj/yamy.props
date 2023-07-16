@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets">
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <VERSION>0.03</VERSION>
+    <VERSION>0.031</VERSION>
     <BOOST_MAJOR>1_82</BOOST_MAJOR>
     <BOOST_MINOR>0</BOOST_MINOR>
   </PropertyGroup>
