@@ -45,6 +45,7 @@ public:
 #ifdef _UNICODE
 				   _T(" (UNICODE)")
 #endif // !_UNICODE
+				   _T(" (PRIVATE VERSION)")
 				   ,
 				   loadString(IDS_homepage).c_str(),
 				   (_T(LOGNAME) _T("@") + toLower(_T(COMPUTERNAME))).c_str(),
