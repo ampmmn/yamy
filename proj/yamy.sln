@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "distrib", "distrib.vcxproj", "{5C8F02E7-A047-4486-BE7B-A2ADA2B6D1FB}"
 EndProject
@@ -107,14 +107,16 @@ Global
 		{BF9E2F1C-A900-4F36-B185-12BA6430673D}.Release|Win32.ActiveCfg = Release|Win32
 		{BF9E2F1C-A900-4F36-B185-12BA6430673D}.Release|Win32.Build.0 = Release|Win32
 		{BF9E2F1C-A900-4F36-B185-12BA6430673D}.Release|x64.ActiveCfg = Release|Win32
-		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
-		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|Mixed Platforms.Build.0 = Debug|x64
-		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|Win32.ActiveCfg = Debug|x64
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|Win32.ActiveCfg = Debug|Win32
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|Win32.Build.0 = Debug|Win32
 		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|x64.ActiveCfg = Debug|x64
 		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Debug|x64.Build.0 = Debug|x64
-		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|Mixed Platforms.ActiveCfg = Release|x64
-		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|Mixed Platforms.Build.0 = Release|x64
-		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|Win32.ActiveCfg = Release|x64
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|Win32.ActiveCfg = Release|Win32
+		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|Win32.Build.0 = Release|Win32
 		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|x64.ActiveCfg = Release|x64
 		{460A3B51-D09E-4303-A84A-02D4B38F3149}.Release|x64.Build.0 = Release|x64
 		{2376FA78-C8B7-4ED0-B4E3-B5AD778A8C0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
@@ -140,5 +142,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0FCD9BD-5D92-4EB9-85B1-ACD0E33996F4}
 	EndGlobalSection
 EndGlobal
