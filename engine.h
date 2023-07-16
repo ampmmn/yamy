@@ -565,6 +565,10 @@ public:
 		return m_isEnabled;
 	}
 
+	// 
+	void unlocked();
+	void releaseKey(uint16_t scanCode);
+
 	/// associated window
 	void setAssociatedWndow(HWND i_hwnd) {
 		m_hwndAssocWindow = i_hwnd;

@@ -400,6 +400,9 @@ private:
 						if (This->m_escapeNlsKeys && This->m_engine.getIsEnabled()) {
 							This->m_fixScancodeMap.escape(true);
 						}
+						if (This->m_engine.getIsEnabled()) {
+							This->m_engine.unlocked();
+						}
 					}
 					m = "WTS_SESSION_UNLOCK";
 					break;

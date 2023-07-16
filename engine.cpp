@@ -1408,6 +1408,38 @@ bool Engine::setSetting(Setting *i_setting) {
 	return true;
 }
 
+void Engine::unlocked()
+{
+	if (m_inputQueue == NULL) {
+		return;
+	}
+
+	releaseKey(0x5b);    // left win
+	releaseKey(0x38);    // left alt
+	releaseKey(0x1d);    // left ctrl
+	releaseKey(0x2a);    // left shift
+	//releaseKey(0x3a);  // caps lock
+	//releaseKey(0x01);  // Esc
+}
+
+void Engine::releaseKey(uint16_t scanCode)
+{
+	WaitForSingleObject(m_queueMutex, INFINITE);
+
+	KEYBOARD_INPUT_DATA kid;
+	kid.UnitId = 0;
+	kid.MakeCode = scanCode;
+	kid.Flags = 0;
+	kid.Flags |= KEYBOARD_INPUT_DATA::BREAK;
+	if (scanCode == 0x5b || scanCode == 0x3a) {
+		kid.Flags |= KEYBOARD_INPUT_DATA::E0;
+	}
+	kid.Reserved = 0;
+	kid.ExtraInformation = 0;
+	m_inputQueue->push_back(kid);
+	SetEvent(m_readEvent);
+	ReleaseMutex(m_queueMutex);
+}
 
 void Engine::checkShow(HWND i_hwnd) {
 	// update show style of window
