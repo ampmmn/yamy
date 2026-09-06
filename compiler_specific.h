@@ -51,10 +51,6 @@
 extern wchar_t **_wargv;
 #    endif
 
-#    ifdef _MBCS
-#      define _istcntrl iscntrl
-#    endif
-
 #    include <windows.h>
 #    include <tchar.h>
 

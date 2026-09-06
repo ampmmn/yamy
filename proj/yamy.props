@@ -4,34 +4,46 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
     <VERSION>0.031</VERSION>
-    <BOOST_MAJOR>1_82</BOOST_MAJOR>
-    <BOOST_MINOR>0</BOOST_MINOR>
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
     <OutDir>..\$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\$(ProjectName)\</IntDir>
+    <RE2Root>$(ProjectDir)..\externals\re2\build\install</RE2Root>
+    <AbseilRoot>$(ProjectDir)..\externals\abseil-cpp\build\install</AbseilRoot>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='Win32' and '$(Configuration)'=='Debug'">
+    <RE2Root>$(ProjectDir)..\externals\re2\build32\install-debug</RE2Root>
+    <AbseilRoot>$(ProjectDir)..\externals\abseil-cpp\build32\install-debug</AbseilRoot>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='Win32' and '$(Configuration)'!='Debug'">
+    <RE2Root>$(ProjectDir)..\externals\re2\build32\install</RE2Root>
+    <AbseilRoot>$(ProjectDir)..\externals\abseil-cpp\build32\install</AbseilRoot>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>../../boost_$(BOOST_MAJOR)_$(BOOST_MINOR)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RE2Root)\include;$(AbseilRoot)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>VERSION="$(VERSION)";LOGNAME="$(USERNAME)";COMPUTERNAME="$(COMPUTERNAME)";_CRT_SECURE_NO_WARNINGS;MAYU64;USE_INI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>ext_lib$(CPUBIT)\$(ConfigurationName)\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(RE2Root)\lib;$(AbseilRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Debug' and '$(Platform)'=='Win32'">re2.lib;absl_all_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Debug' and '$(Platform)'!='Win32'">re2_d.lib;absl_all_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Release' and '$(Platform)'=='Win32'">re2.lib;$(AbseilReleaseLibraryNames);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Release' and '$(Platform)'!='Win32'">re2.lib;absl_all.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions Condition="'$(Platform)'=='Win32' and '$(Configuration)'=='Debug'">/WHOLEARCHIVE:absl_all_d.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <AbseilReleaseLibraries Include="$(AbseilRoot)\lib\absl_*.lib" Exclude="$(AbseilRoot)\lib\absl_all.lib" Condition="'$(Configuration)'=='Release' and '$(Platform)'=='Win32'" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release' and '$(Platform)'=='Win32'">
+    <AbseilReleaseLibraryNames>@(AbseilReleaseLibraries)</AbseilReleaseLibraryNames>
+  </PropertyGroup>
+  <ItemGroup>
     <BuildMacro Include="VERSION">
       <Value>$(VERSION)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="BOOST_MAJOR">
-      <Value>$(BOOST_MAJOR)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="BOOST_MINOR">
-      <Value>$(BOOST_MINOR)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

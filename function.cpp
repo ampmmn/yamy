@@ -1057,14 +1057,14 @@ static BOOL CALLBACK enumWindowsForSetForegroundWindow(
 	if (!GetClassName(i_hwnd, name, NUMBER_OF(name)))
 		return TRUE;
 	tsmatch what;
-	if (!boost::regex_search(tstring(name), what, ep.m_fd->m_windowClassName))
+	if (!regex_search(tstring(name), what, ep.m_fd->m_windowClassName))
 		if (ep.m_fd->m_logicalOp == LogicalOperatorType_and)
 			return TRUE;				// match failed
 
 	if (ep.m_fd->m_logicalOp == LogicalOperatorType_and) {
 		if (GetWindowText(i_hwnd, name, NUMBER_OF(name)) == 0)
 			name[0] = _T('\0');
-		if (!boost::regex_search(tstring(name), what,
+		if (!regex_search(tstring(name), what,
 								 ep.m_fd->m_windowTitleName))
 			return TRUE;				// match failed
 	}
@@ -1111,7 +1111,7 @@ void Engine::funcLoadSetting(FunctionParam *i_param, const StrExprArg &i_name)
 				break;
 
 			tsmatch what;
-			if (boost::regex_match(dot_mayu, what, split) &&
+			if (regex_match(dot_mayu, what, split) &&
 					what.str(1) == i_name.eval()) {
 				reg.write(_T(".mayuIndex"), i);
 				goto success;
@@ -1931,8 +1931,6 @@ public:
 
 class ParseDirectSSTPData
 {
-	typedef boost::match_results<boost::regex::const_iterator> MR;
-
 public:
 	typedef std::map<tstring, DirectSSTPServer> DirectSSTPServers;
 
@@ -1945,16 +1943,10 @@ public:
 			: m_directSSTPServers(i_directSSTPServers) {
 	}
 
-	bool operator()(const MR& i_what) {
-#ifdef _UNICODE
-		tstring id(to_wstring(std::string(i_what[1].first, i_what[1].second)));
-		tstring member(to_wstring(std::string(i_what[2].first, i_what[2].second)));
-		tstring value(to_wstring(std::string(i_what[3].first, i_what[3].second)));
-#else
-		tstring id(i_what[1].first, i_what[1].second);
-		tstring member(i_what[2].first, i_what[2].second);
-		tstring value(i_what[3].first, i_what[3].second);
-#endif
+	bool operator()(const tsmatch &i_what) {
+		tstring id(i_what.str(1));
+		tstring member(i_what.str(2));
+		tstring value(i_what.str(3));
 
 		if (member == _T("path"))
 			(*m_directSSTPServers)[id].m_path = value;
@@ -2006,14 +1998,24 @@ void Engine::funcDirectSSTP(FunctionParam *i_param,
 	long length = *(long *)data;
 	const char *begin = data + 4;
 	const char *end = data + length;
-	boost::regex getSakura("([0-9a-fA-F]{32})\\.([^\x01]+)\x01(.*?)\r\n");
 
 	ParseDirectSSTPData::DirectSSTPServers servers;
-	boost::regex_iterator<boost::regex::const_iterator>
-	it(begin, end, getSakura), last;
-	for (; it != last; ++it)
-		((ParseDirectSSTPData)(&servers))(*it);
-
+	std::string serverData(begin, end);
+	size_t searchPosition = 0;
+	size_t matchBegin;
+	size_t matchEnd;
+	tregex getSakuraRe2("([0-9a-fA-F]{32})\\.([^\x01]+)\x01(.*?)\r\n");
+	for (;;) {
+		tsmatch match;
+		if (!getSakuraRe2.searchUtf8(serverData, searchPosition,
+								 &matchBegin, &matchEnd, &match))
+			break;
+		ParseDirectSSTPData parser(&servers);
+		parser(match);
+		searchPosition = matchEnd;
+		if (matchBegin == matchEnd && searchPosition < serverData.size())
+			++ searchPosition;
+	}
 	// make request
 	tstring request;
 	if (!i_protocol.eval().size())
@@ -2060,7 +2062,7 @@ void Engine::funcDirectSSTP(FunctionParam *i_param,
 	for (ParseDirectSSTPData::DirectSSTPServers::iterator
 			i = servers.begin(); i != servers.end(); ++ i) {
 		tsmatch what;
-		if (boost::regex_match(i->second.m_name, what, i_name)) {
+		if (regex_match(i->second.m_name, what, i_name)) {
 			COPYDATASTRUCT cd;
 			cd.dwData = 9801;
 #ifdef _UNICODE

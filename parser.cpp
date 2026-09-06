@@ -294,17 +294,11 @@ continue_getTokenLoop:
 				while (*t != _T('\0') && *t != q[0]) {
 					if (*t == _T('\\') && *(t + 1))
 						t ++;
-					if (_istlead(*t) && *(t + 1))
-						t ++;
-					t ++;
+				t ++;
 				}
 
 				tstring str =
 					interpretMetaCharacters(tokenStart, t - tokenStart, q, isRegexp);
-#ifdef _MBCS
-				if (isRegexp)
-					str = guardRegexpFromMbcs(str.c_str());
-#endif
 				// concatinate continuous string
 				if (!isRegexp &&
 						0 < o_tokens->size() && o_tokens->back().isString() &&
@@ -325,8 +319,6 @@ continue_getTokenLoop:
 							t ++;
 						else
 							break;
-					if (_istlead(*t) && *(t + 1))
-						t ++;
 					t ++;
 				}
 				if (t == tokenStart) {

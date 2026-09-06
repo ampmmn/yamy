@@ -50,7 +50,7 @@ static bool getFilenameFromRegistry(
 
 	tregex getFilename(_T("^([^;]*);([^;]*);(.*)$"));
 	tsmatch getFilenameResult;
-	if (!boost::regex_match(entry, getFilenameResult, getFilename))
+	if (!regex_match(entry, getFilenameResult, getFilename))
 		return false;
 
 	if (o_name)
@@ -61,7 +61,7 @@ static bool getFilenameFromRegistry(
 		tstringi symbols = getFilenameResult.str(3);
 		tregex symbol(_T("-D([^;]*)(.*)$"));
 		tsmatch symbolResult;
-		while (boost::regex_search(symbols, symbolResult, symbol)) {
+		while (regex_search(symbols, symbolResult, symbol)) {
 			o_symbols->insert(symbolResult.str(1));
 			symbols = symbolResult.str(2);
 		}
@@ -79,7 +79,7 @@ void getHomeDirectories(HomeDirectories *o_pathes)
 			!filename.empty()) {
 		tregex getPath(_T("^(.*[/\\\\])[^/\\\\]*$"));
 		tsmatch getPathResult;
-		if (boost::regex_match(filename, getPathResult, getPath))
+		if (regex_match(filename, getPathResult, getPath))
 			o_pathes->push_back(getPathResult.str(1));
 	}
 
@@ -1266,7 +1266,6 @@ static bool prefixSortPred(const tstringi &i_a, const tstringi &i_b)
 
 /*
   _UNICODE: read file (UTF-16 LE/BE, UTF-8, locale specific multibyte encoding)
-  _MBCS: read file
 */
 bool readFile(tstring *o_data, const tstringi &i_filename)
 {

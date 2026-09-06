@@ -12,7 +12,7 @@
 #  include <iosfwd>
 #  include <fstream>
 #  include <locale>
-#  include <boost/regex.hpp>
+#  include "regex.h"
 #  include <stdio.h>				// for snprintf
 
 
@@ -30,10 +30,6 @@ typedef std::basic_stringstream<_TCHAR> tstringstream;
 typedef std::basic_ifstream<_TCHAR> tifstream;
 /// ofstream for generic international text
 typedef std::basic_ofstream<_TCHAR> tofstream;
-/// basic_regex for generic international text
-typedef boost::basic_regex<_TCHAR> tregex;
-/// match_results for generic international text
-typedef boost::match_results<tstring::const_iterator> tsmatch;
 
 
 /// string with custom stream output
@@ -94,8 +90,6 @@ inline size_t tcslcpy(wchar_t *o_dest, const wchar_t *i_src, size_t i_destSize)
 	return wcslcpy(o_dest, i_src, i_destSize);
 }
 
-// escape regexp special characters in MBCS trail bytes
-std::string guardRegexpFromMbcs(const char *i_str);
 /// converter
 std::wstring to_wstring(const std::string &i_str);
 /// converter

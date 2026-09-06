@@ -397,26 +397,6 @@ tstring addSessionId(const _TCHAR *i_str)
 }
 
 
-#ifdef _MBCS
-// escape regexp special characters in MBCS trail bytes
-std::string guardRegexpFromMbcs(const char *i_str)
-{
-	size_t len = strlen(i_str);
-	Array<char> buf(len * 2 + 1);
-	char *p = buf.get();
-	while (*i_str) {
-		if (_ismbblead(static_cast<u_char>(*i_str)) && i_str[1]) {
-			*p ++ = *i_str ++;
-			if (strchr(".*?+(){}[]^$", *i_str))
-				*p ++ = '\\';
-		}
-		*p ++ = *i_str ++;
-	}
-	return std::string(buf.get(), p);
-}
-#endif // !_MBCS
-
-
 // converter
 std::wstring to_wstring(const std::string &i_str)
 {
@@ -444,7 +424,7 @@ std::string to_string(const std::wstring &i_str)
 /// stream output
 tostream &operator<<(tostream &i_ost, const tregex &i_data)
 {
-	return i_ost << i_data.str();
+	return i_ost << i_data.str().c_str();
 }
 
 

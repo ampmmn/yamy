@@ -61,10 +61,9 @@
 		| <string>		# true
 
 	<string> :
-		  /([/?_a-z]|\MBCS|\EC)([-+/?_a-z0-9]|\MBCS|\EC)*/
-		| /"([^"]|\MBCS|\EC)*"/
-		| /'([^']|\MBCS|\EC)*'/
-	# \MBCS : Multi Byte Character (such as Shift_JIS)
+		  /([/?_a-z]|\EC)([-+/?_a-z0-9]|\EC)*/
+		| /"([^"]|\EC)*"/
+		| /'([^']|\EC)*'/
 	# \EC : Escaped Characters
 	#	| "\a"	# bell
 	#	| "\e"	# escape

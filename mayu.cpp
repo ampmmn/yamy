@@ -459,7 +459,7 @@ private:
 							if (!reg.read(buf, &dot_mayu))
 								break;
 							tsmatch what;
-							if (boost::regex_search(dot_mayu, what, getName)) {
+							if (regex_search(dot_mayu, what, getName)) {
 								MENUITEMINFO mii;
 								std::memset(&mii, 0, sizeof(mii));
 								mii.cbSize = sizeof(mii);

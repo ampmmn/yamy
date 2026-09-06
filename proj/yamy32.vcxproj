@@ -58,7 +58,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -74,7 +74,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
@@ -107,6 +107,7 @@
     <ClCompile Include="..\registry.cpp" />
     <ClCompile Include="..\setting.cpp" />
     <ClCompile Include="..\stringtool.cpp" />
+    <ClCompile Include="..\regex.cpp" />
     <ClCompile Include="..\target.cpp" />
     <ClCompile Include="..\vkeytable.cpp" />
     <ClCompile Include="..\windowstool.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="..\registry.h" />
     <ClInclude Include="..\setting.h" />
     <ClInclude Include="..\stringtool.h" />
+    <ClInclude Include="..\regex.h" />
     <ClInclude Include="..\target.h" />
     <ClInclude Include="..\vk2tchar.h" />
     <ClInclude Include="..\vkeytable.h" />
@@ -151,10 +153,6 @@
   <ItemGroup>
     <ProjectReference Include="makefunc.vcxproj">
       <Project>{33af9375-55c1-480e-93cc-52951d42858f}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="regex32.vcxproj">
-      <Project>{2376fa78-c8b7-4ed0-b4e3-b5ad778a8c0f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="yamy32dll.vcxproj">

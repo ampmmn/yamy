@@ -139,7 +139,7 @@ public:
 				break;
 
 			tsmatch what;
-			if (boost::regex_match(dot_mayu, what, split)) {
+			if (regex_match(dot_mayu, what, split)) {
 				data.m_name = what.str(1);
 				data.m_filename = what.str(2);
 				data.m_symbols = what.str(3);

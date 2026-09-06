@@ -222,15 +222,13 @@ Keymap::Keymap(Type i_type,
 		m_windowTitle(_T(".*"))
 {
 	if (i_type == Type_windowAnd || i_type == Type_windowOr)
-		try {
-			tregex::flag_type f = (tregex::normal |
-								   tregex::icase);
-			if (!i_windowClass.empty())
-				m_windowClass.assign(i_windowClass, f);
-			if (!i_windowTitle.empty())
-				m_windowTitle.assign(i_windowTitle, f);
-		} catch (boost::bad_expression &i_e) {
-			throw ErrorMessage() << i_e.what();
+		{
+			tregex::flag_type f = (flag_type)(tregex::normal |
+									  tregex::icase);
+			if (!i_windowClass.empty() && !m_windowClass.assign(i_windowClass, f))
+				throw ErrorMessage() << m_windowClass.error().c_str();
+			if (!i_windowTitle.empty() && !m_windowTitle.assign(i_windowTitle, f))
+				throw ErrorMessage() << m_windowTitle.error().c_str();
 		}
 }
 
@@ -292,16 +290,16 @@ bool Keymap::doesSameWindow(const tstringi i_className,
 		return false;
 
 	tsmatch what;
-	if (boost::regex_search(i_className, what, m_windowClass)) {
+	if (regex_search(i_className, what, m_windowClass)) {
 		if (m_type == Type_windowAnd)
-			return boost::regex_search(i_titleName, what, m_windowTitle);
+			return regex_search(i_titleName, what, m_windowTitle);
 		else // type == Type_windowOr
 			return true;
 	} else {
 		if (m_type == Type_windowAnd)
 			return false;
 		else // type == Type_windowOr
-			return boost::regex_search(i_titleName, what, m_windowTitle);
+			return regex_search(i_titleName, what, m_windowTitle);
 	}
 }
 

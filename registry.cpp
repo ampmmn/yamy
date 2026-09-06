@@ -291,7 +291,7 @@ static bool string2logfont(LOGFONT *o_lf, const tstring &i_strlf)
 			  _T("(-?\\d+),(-?\\d+),(-?\\d+),(.+)$"));
 	tsmatch what;
 
-	if (!boost::regex_match(i_strlf, what, lf))
+	if (!regex_match(i_strlf, what, lf))
 		return false;
 	o_lf->lfHeight         =       _ttoi(what.str(1).c_str());
 	o_lf->lfWidth          =       _ttoi(what.str(2).c_str());
