@@ -85,16 +85,10 @@ batch:
 		-$(MAKE) -f mayu-vc.mak MAYU_VC=$(MAYU_VC) TARGETOS=WINNT
 !endif
 		-$(MAKE) -f mayu-vc.mak MAYU_VC=$(MAYU_VC) TARGETOS=WINNT nodebug=1
-#		cd s
-#		-$(MAKE) -f setup-vc.mak MAYU_VC=$(MAYU_VC) batch
-#		cd ..
 
 batch_clean:
 		-$(MAKE) -k -f mayu-vc.mak MAYU_VC=$(MAYU_VC) TARGETOS=WINNT nodebug=1 clean
 		-$(MAKE) -k -f mayu-vc.mak MAYU_VC=$(MAYU_VC) TARGETOS=WINNT clean
-		cd s
-		-$(MAKE) -k -f setup-vc.mak MAYU_VC=$(MAYU_VC) batch_clean
-		cd ..
 
 batch_distclean: batch_clean
 		-$(MAKE) -k -f mayu-vc.mak MAYU_VC=$(MAYU_VC) TARGETOS=WINNT distclean

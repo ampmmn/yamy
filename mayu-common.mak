@@ -178,7 +178,6 @@ DISTRIB		=			\
 		$(TARGET_2)		\
 		$(TARGET_4)		\
 		$(TARGET_5)		\
-		s\$(OUT_DIR)\setup.exe	\
 		$(DISTRIB_SETTINGS)	\
 		$(DISTRIB_MANUAL)	\
 		$(DISTRIB_CONTRIBS)	\
@@ -187,14 +186,12 @@ DISTRIB		=			\
 
 # tools		###############################################################
 
-IEXPRESS	= iexpress
 DOCXX		= doc++.exe
 MAKEDEPEND	= perl tools/makedepend -o.obj
 DOS2UNIX	= perl tools/dos2unix
 UNIX2DOS	= perl tools/unix2dos
 MAKEFUNC	= perl tools/makefunc
 GETCVSFILES	= perl tools/getcvsfiles
-GENIEXPRESS	= perl tools/geniexpress
 
 
 # rules		###############################################################
