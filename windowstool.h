@@ -8,6 +8,7 @@
 
 #  include "stringtool.h"
 #  include <windows.h>
+#  include <wtsapi32.h>
 
 
 /// instance handle of this application
@@ -135,47 +136,15 @@ extern void editInsertTextAtLast(HWND i_hwnd, const tstring &i_text,
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Windows2000/XP specific API
-
-/// SetLayeredWindowAttributes API
-typedef BOOL (WINAPI *SetLayeredWindowAttributes_t)
-(HWND hwnd, COLORREF crKey, BYTE bAlpha, DWORD dwFlags);
-extern SetLayeredWindowAttributes_t setLayeredWindowAttributes;
-
-/// MonitorFromWindow API
-extern HMONITOR (WINAPI *monitorFromWindow)(HWND hwnd, DWORD dwFlags);
-
-/// GetMonitorInfo API
-extern BOOL (WINAPI *getMonitorInfo)(HMONITOR hMonitor, LPMONITORINFO lpmi);
-
-/// EnumDisplayMonitors API
-extern BOOL (WINAPI *enumDisplayMonitors)
-	(HDC hdc, LPRECT lprcClip, MONITORENUMPROC lpfnEnum, LPARAM dwData);
-
+// Windows API
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// WindowsXP specific API
-
-/// WTSRegisterSessionNotification API
-typedef BOOL (WINAPI *WTSRegisterSessionNotification_t)
-(HWND hWnd, DWORD dwFlags);
-extern WTSRegisterSessionNotification_t wtsRegisterSessionNotification;
-
-/// WTSUnRegisterSessionNotification API
-typedef BOOL (WINAPI *WTSUnRegisterSessionNotification_t)(HWND hWnd);
-extern WTSUnRegisterSessionNotification_t wtsUnRegisterSessionNotification;
-
-/// WTSGetActiveConsoleSessionId API
-typedef DWORD (WINAPI *WTSGetActiveConsoleSessionId_t)(void);
-extern WTSGetActiveConsoleSessionId_t wtsGetActiveConsoleSessionId;
+// Session API
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Utility
 
 // PathRemoveFileSpec()
 tstring pathRemoveFileSpec(const tstring &i_path);
-
-// check Windows version i_major.i_minor or later
-BOOL checkWindowsVersion(DWORD i_major, DWORD i_minor);
 
 #endif // _WINDOWSTOOL_H

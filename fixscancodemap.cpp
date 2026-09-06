@@ -510,19 +510,8 @@ FixScancodeMap::FixScancodeMap() :
 		}
 	}
 
-	// Windows7 RC not support Scancode Map on HKCU?
-	if (checkWindowsVersion(6, 1) == FALSE) {
-		m_pReg = &m_regHKCU; // Vista or earlier
-	} else {
-		m_pReg = &m_regHKLM; // Windows7 or later
-	}
-
-	// prototype of UpdatePerUserSystemParameters() differ vista or earlier
-	if (checkWindowsVersion(6, 0) == FALSE) {
-		m_info.isVistaOrLater_ = 0; // before Vista
-	} else {
-		m_info.isVistaOrLater_ = 1; // Vista or later
-	}
+	m_pReg = &m_regHKLM;
+	m_info.isVistaOrLater_ = 1;
 
 	m_errorOnConstruct = acquirePrivileges();
 	if (m_errorOnConstruct) {

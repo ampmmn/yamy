@@ -576,11 +576,11 @@ bool getSuitableMdiWindow(FunctionParam *i_param, HWND *o_hwnd,
 		if (o_rcWindow)
 			GetWindowRect(*o_hwnd, o_rcWindow);
 		if (o_rcParent) {
-			HMONITOR hm = monitorFromWindow(i_param->m_hwnd,
+			HMONITOR hm = MonitorFromWindow(i_param->m_hwnd,
 											MONITOR_DEFAULTTONEAREST);
 			MONITORINFO mi;
 			mi.cbSize = sizeof(mi);
-			getMonitorInfo(hm, &mi);
+			GetMonitorInfo(hm, &mi);
 			*o_rcParent = mi.rcWork;
 		}
 		break;
@@ -1444,7 +1444,7 @@ static BOOL CALLBACK enumDisplayMonitorsForWindowMonitorTo(
 
 	MONITORINFO mi;
 	mi.cbSize = sizeof(mi);
-	getMonitorInfo(i_hmon, &mi);
+	GetMonitorInfo(i_hmon, &mi);
 	ep.m_monitorinfos.push_back(mi);
 
 	if (mi.dwFlags & MONITORINFOF_PRIMARY)
@@ -1465,10 +1465,10 @@ void Engine::funcWindowMonitorTo(
 		return;
 
 	HMONITOR hmonCur;
-	hmonCur = monitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+	hmonCur = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
 
 	EnumDisplayMonitorsForWindowMonitorToParam ep(hmonCur);
-	enumDisplayMonitors(NULL, NULL, enumDisplayMonitorsForWindowMonitorTo,
+	EnumDisplayMonitors(NULL, NULL, enumDisplayMonitorsForWindowMonitorTo,
 						reinterpret_cast<LPARAM>(&ep));
 	if (ep.m_monitors.size() < 1 ||
 			ep.m_primaryMonitorIdx < 0 || ep.m_currentMonitorIdx < 0)
@@ -1688,7 +1688,7 @@ void Engine::funcWindowSetAlpha(FunctionParam *i_param, int i_alpha)
 			SetWindowLong(hwnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
 #endif
 			i_alpha %= 101;
-			if (!setLayeredWindowAttributes(hwnd, 0,
+			if (!SetLayeredWindowAttributes(hwnd, 0,
 											(BYTE)(255 * i_alpha / 100), LWA_ALPHA)) {
 				Acquire a(&m_log, 0);
 				m_log << _T("error: &WindowSetAlpha(") << i_alpha

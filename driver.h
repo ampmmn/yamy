@@ -8,15 +8,6 @@
 #  include <winioctl.h>
 
 
-/// mayu device file name
-#    define MAYU_DEVICE_FILE_NAME _T("\\\\.\\MayuDetour1")
-///
-#    define MAYU_DRIVER_NAME _T("mayud")
-
-/// Ioctl value
-#include "d/ioctl.h"
-
-
 /// derived from w2kddk/inc/ntddkbd.h
 class KEYBOARD_INPUT_DATA
 {

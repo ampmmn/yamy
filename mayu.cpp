@@ -700,7 +700,7 @@ private:
 
 			case WM_DESTROY:
 				if (This->m_usingSN) {
-					wtsUnRegisterSessionNotification(i_hwnd);
+					WTSUnRegisterSessionNotification(i_hwnd);
 					This->m_usingSN = false;
 				}
 				if (!This->m_sessionState) {
@@ -1035,11 +1035,9 @@ public:
 		m_hNotifyMailslot = CreateMailslot(NOTIFY_MAILSLOT_NAME, 0, MAILSLOT_WAIT_FOREVER, (SECURITY_ATTRIBUTES *)NULL);
 		ASSERT(m_hNotifyMailslot != INVALID_HANDLE_VALUE);
 		int err;
-		if (checkWindowsVersion(6, 0) != FALSE) { // enableToWriteByUser() is available only Vista or later
-			err = enableToWriteByUser(m_hNotifyMailslot);
-			if (err) {
-				errorDialogWithCode(IDS_cannotPermitStandardUser, err);
-			}
+		err = enableToWriteByUser(m_hNotifyMailslot);
+		if (err) {
+			errorDialogWithCode(IDS_cannotPermitStandardUser, err);
 		}
 
 		m_hNotifyEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -1073,7 +1071,7 @@ public:
 
 		// set window handle of tasktray to hooks
 		CHECK_FALSE( installMessageHook(reinterpret_cast<DWORD>(m_hwndTaskTray)) );
-		m_usingSN = wtsRegisterSessionNotification(m_hwndTaskTray,
+		m_usingSN = WTSRegisterSessionNotification(m_hwndTaskTray,
 					NOTIFY_FOR_THIS_SESSION);
 
 		DlgLogData dld;
@@ -1344,14 +1342,10 @@ int WINAPI _tWinMain(HINSTANCE i_hInstance, HINSTANCE /* i_hPrevInstance */,
 	CHECK_TRUE( _tsetlocale(LC_ALL, _T("")) );
 
 	// common controls
-#if defined(_WIN95)
-	InitCommonControls();
-#else
 	INITCOMMONCONTROLSEX icc;
 	icc.dwSize = sizeof(icc);
 	icc.dwICC = ICC_LISTVIEW_CLASSES;
 	CHECK_TRUE( InitCommonControlsEx(&icc) );
-#endif
 
 	// convert old registry to new registry
 #ifndef USE_INI
