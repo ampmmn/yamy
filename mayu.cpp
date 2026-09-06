@@ -813,20 +813,9 @@ private:
 		_TCHAR starttimebuf[1024];
 		_TCHAR timebuf[1024];
 
-#ifdef __BORLANDC__
-#pragma message("\t\t****\tAfter std::ostream() is called,  ")
-#pragma message("\t\t****\tstrftime(... \"%%#c\" ...) fails.")
-#pragma message("\t\t****\tWhy ? Bug of Borland C++ 5.5.1 ? ")
-#pragma message("\t\t****\t                         - nayuta")
-		_tcsftime(timebuf, NUMBER_OF(timebuf), _T("%Y/%m/%d %H:%M:%S"),
-				  localtime(&now));
-		_tcsftime(starttimebuf, NUMBER_OF(starttimebuf), _T("%Y/%m/%d %H:%M:%S"),
-				  localtime(&m_startTime));
-#else
 		_tcsftime(timebuf, NUMBER_OF(timebuf), _T("%#c"), localtime(&now));
 		_tcsftime(starttimebuf, NUMBER_OF(starttimebuf), _T("%#c"),
 				  localtime(&m_startTime));
-#endif
 
 		Acquire a(&m_log, 0);
 		m_log << _T("------------------------------------------------------------") << std::endl;

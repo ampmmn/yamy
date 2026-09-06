@@ -23,10 +23,7 @@ public:
 	typedef Allocator                             allocator_type;	///
 	typedef typename Allocator::pointer           pointer; ///
 	typedef typename Allocator::const_pointer     const_pointer; ///
-#if 0
-	typedef std::reverse_iterator<iterator>       reverse_iterator; ///
-	typedef std::reverse_iterator<const_iterator> const_reverse_iterator;	///
-#endif
+
 private:
 	Allocator m_allocator;			///
 	size_type m_size;				///

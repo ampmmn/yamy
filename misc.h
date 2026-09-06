@@ -48,9 +48,7 @@ typedef long int32;				/// signed 32bit
 typedef unsigned char u_int8;			/// unsigned 8bit
 typedef unsigned short u_int16;			/// unsigned 16bit
 typedef unsigned long u_int32;			/// unsigned 32bit
-#if defined(__BORLANDC__)
-typedef unsigned __int64 u_int64;			/// unsigned 64bit
-#elif _MSC_VER <= 1300
+#if _MSC_VER <= 1300
 typedef unsigned _int64 u_int64;			/// unsigned 64bit
 #else
 typedef unsigned long long u_int64;			/// unsigned 64bit

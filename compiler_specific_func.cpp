@@ -23,23 +23,6 @@ tstring getCompilerVersionString()
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Borland C++ 5.5.1
-
-#elif defined(__BORLANDC__)
-
-// get compiler version string
-tstring getCompilerVersionString()
-{
-	TCHAR buf[100];
-	_sntprintf(buf, NUMBER_OF(buf), _T("Borland C++ %d.%d.%d"),
-			   __BORLANDC__ / 0x100,
-			   __BORLANDC__ / 0x10 % 0x10,
-			   __BORLANDC__ % 0x10);
-	return tstring(buf);
-}
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // unknown
 
 #else

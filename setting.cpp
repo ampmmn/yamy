@@ -732,7 +732,10 @@ void SettingLoader::load_ARGUMENT(std::list<tstringq> *o_arg)
 // &lt;ARGUMENT&gt;
 void SettingLoader::load_ARGUMENT(tregex *o_arg)
 {
-	*o_arg = getToken()->getRegexp();
+	tstringi pattern = getToken()->getRegexp();
+	if (!o_arg->assign(pattern))
+		throw ErrorMessage() << _T("`") << pattern
+							 << _T("': ") << o_arg->error().c_str();
 }
 
 

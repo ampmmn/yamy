@@ -141,6 +141,7 @@ KeySeq::~KeySeq()
 
 
 KeySeq &KeySeq::operator=(const KeySeq &i_ks)
+
 {
 	if (this != &i_ks) {
 		clear();
@@ -161,6 +162,7 @@ KeySeq &KeySeq::add(const Action &i_action)
 
 /// get the first modified key of this key sequence
 ModifiedKey KeySeq::getFirstModifiedKey() const
+
 {
 	if (0 < m_actions.size()) {
 		const Action *a = m_actions.front();
@@ -223,7 +225,7 @@ Keymap::Keymap(Type i_type,
 {
 	if (i_type == Type_windowAnd || i_type == Type_windowOr)
 		{
-			tregex::flag_type f = (flag_type)(tregex::normal |
+			tregex::flag_type f = (tregex::flag_type)(tregex::normal |
 									  tregex::icase);
 			if (!i_windowClass.empty() && !m_windowClass.assign(i_windowClass, f))
 				throw ErrorMessage() << m_windowClass.error().c_str();
@@ -306,6 +308,7 @@ bool Keymap::doesSameWindow(const tstringi i_className,
 
 // adjust modifier
 void Keymap::adjustModifier(Keyboard &i_keyboard)
+
 {
 	for (size_t i = 0; i < NUMBER_OF(m_modAssignments); ++ i) {
 		ModAssignments mos;
@@ -515,8 +518,8 @@ Keymap *Keymaps::searchByName(const tstringi &i_name)
 
 // search window
 void Keymaps::searchWindow(KeymapPtrList *o_keymapPtrList,
-						   const tstringi &i_className,
-						   const tstringi &i_titleName)
+							const tstringi &i_className,
+							const tstringi &i_titleName)
 {
 	o_keymapPtrList->clear();
 	for (KeymapList::iterator
@@ -551,6 +554,7 @@ void Keymaps::adjustModifier(Keyboard &i_keyboard)
 
 // add a named keyseq (name can be empty)
 KeySeq *KeySeqs::add(const KeySeq &i_keySeq)
+
 {
 	if (!i_keySeq.getName().empty()) {
 		KeySeq *ks = searchByName(i_keySeq.getName());
