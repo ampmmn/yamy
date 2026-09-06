@@ -13,16 +13,17 @@ template <class T, class Allocator = std::allocator<T> >
 class Array
 {
 public:
-	typedef typename Allocator::reference         reference; ///
-	typedef typename Allocator::const_reference   const_reference; ///
-	typedef typename Allocator::pointer           iterator; ///
-	typedef typename Allocator::const_pointer     const_iterator;	///
-	typedef typename Allocator::size_type         size_type; ///
-	typedef typename Allocator::difference_type   difference_type; ///
+	typedef std::allocator_traits<Allocator>      allocator_traits;
+	typedef T&                                    reference; ///
+	typedef const T&                              const_reference; ///
+	typedef typename allocator_traits::pointer    iterator; ///
+	typedef typename allocator_traits::const_pointer const_iterator;	///
+	typedef typename allocator_traits::size_type  size_type; ///
+	typedef typename allocator_traits::difference_type difference_type; ///
 	typedef T                                     value_type;	///
 	typedef Allocator                             allocator_type;	///
-	typedef typename Allocator::pointer           pointer; ///
-	typedef typename Allocator::const_pointer     const_pointer; ///
+	typedef typename allocator_traits::pointer    pointer; ///
+	typedef typename allocator_traits::const_pointer const_pointer; ///
 
 private:
 	Allocator m_allocator;			///
@@ -38,7 +39,7 @@ public:
 	explicit Array(size_type i_size, const T& i_value = T(),
 				   const Allocator& i_allocator = Allocator())
 			: m_allocator(i_allocator), m_size(i_size),
-			m_buf(m_allocator.allocate(m_size, 0)) {
+			m_buf(allocator_traits::allocate(m_allocator, m_size)) {
 		std::uninitialized_fill_n(m_buf, i_size, i_value);
 	}
 
@@ -47,7 +48,7 @@ public:
 	Array(InputIterator i_begin, InputIterator i_end,
 		  const Allocator& i_allocator = Allocator())
 			: m_allocator(i_allocator), m_size(distance(i_begin, i_end)),
-			m_buf(Allocator::allocate(m_size, 0)) {
+			m_buf(allocator_traits::allocate(m_allocator, m_size)) {
 		std::uninitialized_copy(i_begin, i_end, m_buf);
 	}
 
@@ -66,7 +67,7 @@ public:
 		if (&i_o != this) {
 			clear();
 			m_size = i_o.m_size;
-			m_buf = m_allocator.allocate(m_size, 0);
+			m_buf = allocator_traits::allocate(m_allocator, m_size);
 			std::uninitialized_copy(i_o.m_buf, i_o.m_buf + m_size, m_buf);
 		}
 		return *this;
@@ -76,11 +77,11 @@ public:
 		return Allocator();
 	}
 	/// return pointer to the array buffer
-	typename allocator_type::pointer get() {
+	typename allocator_traits::pointer get() {
 		return m_buf;
 	}
 	/// return pointer to the array buffer
-	typename allocator_type::const_pointer get() const {
+	typename allocator_traits::const_pointer get() const {
 		return m_buf;
 	}
 	///
@@ -129,7 +130,7 @@ public:
 	void resize(size_type i_size, const T& i_value = T()) {
 		clear();
 		m_size = i_size;
-		m_buf = m_allocator.allocate(m_size, 0);
+		m_buf = allocator_traits::allocate(m_allocator, m_size);
 		std::uninitialized_fill_n(m_buf, i_size, i_value);
 	}
 	/// resize the array buffer.
@@ -137,7 +138,7 @@ public:
 	void resize(InputIterator i_begin, InputIterator i_end) {
 		clear();
 		m_size = distance(i_begin, i_end);
-		m_buf = m_allocator.allocate(m_size, 0);
+		m_buf = allocator_traits::allocate(m_allocator, m_size);
 		std::uninitialized_copy(i_begin, i_end, m_buf);
 	}
 	/// expand the array buffer. the contents of it are copied to the new one
@@ -146,7 +147,7 @@ public:
 		if (!m_buf)
 			resize(i_size, i_value);
 		else {
-			pointer buf = m_allocator.allocate(i_size, 0);
+			pointer buf = allocator_traits::allocate(m_allocator, i_size);
 			std::uninitialized_copy(m_buf, m_buf + m_size, buf);
 			std::uninitialized_fill_n(buf + m_size, i_size - m_size, i_value);
 			clear();
@@ -205,8 +206,8 @@ public:
 	void clear() {
 		if (m_buf) {
 			for (size_type i = 0; i < m_size; i ++)
-				m_allocator.destroy(&m_buf[i]);
-			m_allocator.deallocate(m_buf, m_size);
+				allocator_traits::destroy(m_allocator, &m_buf[i]);
+			allocator_traits::deallocate(m_allocator, m_buf, m_size);
 			m_buf = 0;
 			m_size = 0;
 		}

@@ -155,7 +155,7 @@ bool Registry::write(HKEY i_root, const tstring &i_path,
 			return false;
 		RegSetValueEx(hkey, i_name.c_str(), NULL, REG_SZ,
 					  (BYTE *)i_value.c_str(),
-					  (i_value.size() + 1) * sizeof(tstring::value_type));
+					  (DWORD)((i_value.size() + 1) * sizeof(tstring::value_type)));
 		RegCloseKey(hkey);
 		return true;
 	} else {

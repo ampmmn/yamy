@@ -271,7 +271,7 @@ bool notify(void *i_data, size_t i_dataSize)
 	DWORD len;
 	if (g.m_hMailslot != INVALID_HANDLE_VALUE) {
 		BOOL ret;
-		ret = WriteFile(g.m_hMailslot, i_data, i_dataSize, &len, NULL);
+		ret = WriteFile(g.m_hMailslot, i_data, (DWORD)i_dataSize, &len, NULL);
 #ifndef NDEBUG
 		if (ret == 0) {
 			HOOK_RPT2("MAYU: %S WriteFile to mailslot failed(0x%08x)\r\n", g.m_moduleName, GetLastError());
@@ -281,11 +281,11 @@ bool notify(void *i_data, size_t i_dataSize)
 #endif // !NDEBUG
 	} else {
 		cd.dwData = reinterpret_cast<Notify *>(i_data)->m_type;
-		cd.cbData = i_dataSize;
+		cd.cbData = (DWORD)i_dataSize;
 		cd.lpData = i_data;
 		if (g.m_hwndTaskTray == 0 || cd.dwData == Notify::Type_threadDetach)
 			return false;
-		if (!SendMessageTimeout(reinterpret_cast<HWND>(g.m_hwndTaskTray),
+		if (!SendMessageTimeout((HWND)(size_t)g.m_hwndTaskTray,
 								WM_COPYDATA, NULL, reinterpret_cast<LPARAM>(&cd),
 								SMTO_ABORTIFHUNG | SMTO_NORMAL, 5000, &result)) {
 			_RPT0(_CRT_WARN, "MAYU: SendMessageTimeout() timeouted\r\n");
@@ -391,7 +391,7 @@ static void notifyName(HWND i_hwnd, Notify::Type i_type = Notify::Type_name)
 	NotifySetFocus *nfc = new NotifySetFocus;
 	nfc->m_type = i_type;
 	nfc->m_threadId = GetCurrentThreadId();
-	nfc->m_hwnd = reinterpret_cast<DWORD>(i_hwnd);
+	nfc->m_hwnd = (DWORD)(size_t)(i_hwnd);
 	tcslcpy(nfc->m_className, className.c_str(), NUMBER_OF(nfc->m_className));
 	tcslcpy(nfc->m_titleName, titleName.c_str(), NUMBER_OF(nfc->m_titleName));
 
@@ -498,13 +498,13 @@ static void funcRecenter(HWND i_hwnd)
 	POINTL p = { (rc.right + rc.left) / 2, (rc.top + rc.bottom) / 2 };
 	int line;
 	if (isEdit) {
-		line = SendMessage(i_hwnd, EM_CHARFROMPOS, 0, MAKELPARAM(p.x, p.y));
+		line = (int)SendMessage(i_hwnd, EM_CHARFROMPOS, 0, MAKELPARAM(p.x, p.y));
 		line = HIWORD(line);
 	} else {
-		int ci = SendMessage(i_hwnd, EM_CHARFROMPOS, 0, (LPARAM)&p);
-		line = SendMessage(i_hwnd, EM_EXLINEFROMCHAR, 0, ci);
+		int ci = (int)SendMessage(i_hwnd, EM_CHARFROMPOS, 0, (LPARAM)&p);
+		line = (int)SendMessage(i_hwnd, EM_EXLINEFROMCHAR, 0, ci);
 	}
-	int caretLine = SendMessage(i_hwnd, EM_LINEFROMCHAR, -1, 0);
+	int caretLine = (int)SendMessage(i_hwnd, EM_LINEFROMCHAR, -1, 0);
 	SendMessage(i_hwnd, EM_LINESCROLL, 0, caretLine - line);
 }
 
@@ -648,10 +648,10 @@ LRESULT CALLBACK getMessageProc(int i_nCode, WPARAM i_wParam, LPARAM i_lParam)
 				funcRecenter(msg.hwnd);
 				break;
 			case MayuMessage_funcSetImeStatus:
-				funcSetImeStatus(msg.hwnd, msg.lParam);
+				funcSetImeStatus(msg.hwnd, (int)msg.lParam);
 				break;
 			case MayuMessage_funcSetImeString:
-				funcSetImeString(msg.hwnd, msg.lParam);
+				funcSetImeString(msg.hwnd, (int)msg.lParam);
 				break;
 			}
 		}

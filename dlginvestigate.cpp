@@ -84,7 +84,7 @@ public:
 				{
 					Acquire a(&m_data.m_engine->m_log, 1);
 					m_data.m_engine->m_log << _T("HWND:\t") << std::hex
-					<< reinterpret_cast<int>(i_hwndTarget)
+					<< (i_hwndTarget)
 					<< std::dec << std::endl;
 				}
 				Acquire a(&m_data.m_engine->m_log, 0);

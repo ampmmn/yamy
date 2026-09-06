@@ -222,11 +222,13 @@ BOOL LayoutManager::defaultWMHandler(UINT i_message,
 {
 	switch (i_message) {
 	case WM_SIZE:
-		return wmSize(i_wParam, LOWORD(i_lParam), HIWORD(i_lParam));
+		return wmSize(static_cast<DWORD>(i_wParam),
+					  LOWORD(i_lParam), HIWORD(i_lParam));
 	case WM_PAINT:
 		return wmPaint();
 	case WM_SIZING:
-		return wmSizing(i_wParam, reinterpret_cast<RECT *>(i_lParam));
+		return wmSizing(static_cast<int>(i_wParam),
+						 reinterpret_cast<RECT *>(i_lParam));
 	case WM_NCHITTEST:
 		return wmNcHitTest(GET_X_LPARAM(i_lParam), GET_Y_LPARAM(i_lParam));
 	}

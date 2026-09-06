@@ -155,7 +155,7 @@ private:
 			n->m_titleName[NUMBER_OF(n->m_titleName) - 1] = _T('\0');
 
 			if (n->m_type == Notify::Type_setFocus)
-				m_engine.setFocus(reinterpret_cast<HWND>(n->m_hwnd), n->m_threadId,
+				m_engine.setFocus((HWND)(size_t)n->m_hwnd, n->m_threadId,
 								  n->m_className, n->m_titleName, false);
 
 			{
@@ -171,7 +171,7 @@ private:
 			m_log << _T("TITLE:\t") << n->m_titleName << std::endl;
 
 			bool isMDI = true;
-			HWND hwnd = getToplevelWindow(reinterpret_cast<HWND>(n->m_hwnd), &isMDI);
+			HWND hwnd = getToplevelWindow((HWND)(size_t)(n->m_hwnd), &isMDI);
 			RECT rc;
 			if (isMDI) {
 				getChildWindowRect(hwnd, &rc);
@@ -179,7 +179,7 @@ private:
 				<< rc.left << _T(", ") << rc.top << _T(") / (")
 				<< rcWidth(&rc) << _T("x") << rcHeight(&rc) << _T(")")
 				<< std::endl;
-				hwnd = getToplevelWindow(reinterpret_cast<HWND>(n->m_hwnd), NULL);
+				hwnd = getToplevelWindow((HWND)(size_t)(n->m_hwnd), NULL);
 			}
 
 			GetWindowRect(hwnd, &rc);
@@ -470,7 +470,7 @@ private:
 								mii.wID = ID_MENUITEM_reloadBegin + index;
 								tstringi name(what.str(1));
 								mii.dwTypeData = const_cast<_TCHAR *>(name.c_str());
-								mii.cch = name.size();
+								mii.cch = (UINT)name.size();
 
 								InsertMenuItem(hMenuSubSub, index, TRUE, &mii);
 							}
@@ -502,13 +502,13 @@ private:
 						// escape NLS keys success
 						break;
 					case YAMY_ERROR_TIMEOUT_INJECTION:
-						ret = This->errorDialogWithCode(IDS_escapeNlsKeysRetry, i_wParam, MB_RETRYCANCEL | MB_ICONSTOP);
+						ret = This->errorDialogWithCode(IDS_escapeNlsKeysRetry, (int)i_wParam, MB_RETRYCANCEL | MB_ICONSTOP);
 						if (ret == IDRETRY) {
 							This->m_fixScancodeMap.escape(true);
 						}
 						break;
 					default:
-						This->errorDialogWithCode(IDS_escapeNlsKeysFailed, i_wParam, MB_OK);
+						This->errorDialogWithCode(IDS_escapeNlsKeysFailed, (int)i_wParam, MB_OK);
 						break;
 					}
 				} else {
@@ -1059,7 +1059,7 @@ public:
 		CHECK_TRUE( m_hwndTaskTray );
 
 		// set window handle of tasktray to hooks
-		CHECK_FALSE( installMessageHook(reinterpret_cast<DWORD>(m_hwndTaskTray)) );
+		CHECK_FALSE( installMessageHook((DWORD)(size_t)(m_hwndTaskTray)) );
 		m_usingSN = WTSRegisterSessionNotification(m_hwndTaskTray,
 					NOTIFY_FOR_THIS_SESSION);
 
@@ -1350,7 +1350,7 @@ int WINAPI _tWinMain(HINSTANCE i_hInstance, HINSTANCE /* i_hPrevInstance */,
 		tstring title = loadString(IDS_mayu);
 		if (g_hookData) {
 			UINT WM_TaskbarRestart = RegisterWindowMessage(_T("TaskbarCreated"));
-			PostMessage(reinterpret_cast<HWND>(g_hookData->m_hwndTaskTray),
+			PostMessage((HWND)(size_t)(g_hookData->m_hwndTaskTray),
 						WM_TaskbarRestart, 0, 0);
 		}
 		MessageBox((HWND)NULL, text.c_str(), title.c_str(), MB_OK | MB_ICONSTOP);

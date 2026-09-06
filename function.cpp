@@ -987,17 +987,17 @@ void Engine::shellExecute()
 		reinterpret_cast<FunctionData_ShellExecute *>(
 			m_afShellExecute->m_functionData);
 
-	int r = (int)ShellExecute(
+	INT_PTR r = reinterpret_cast<INT_PTR>(ShellExecute(
 				NULL,
 				fd->m_operation.eval().empty() ? _T("open") : fd->m_operation.eval().c_str(),
 				fd->m_file.eval().empty() ? NULL : fd->m_file.eval().c_str(),
 				fd->m_parameters.eval().empty() ? NULL : fd->m_parameters.eval().c_str(),
 				fd->m_directory.eval().empty() ? NULL : fd->m_directory.eval().c_str(),
-				fd->m_showCommand);
+				fd->m_showCommand));
 	if (32 < r)
 		return; // success
 
-	typedef TypeTable<int> ErrorTable;
+	typedef TypeTable<INT_PTR> ErrorTable;
 	static const ErrorTable errorTable[] = {
 		{ 0, _T("The operating system is out of memory or resources.") },
 		{ ERROR_FILE_NOT_FOUND, _T("The specified file was not found.") },
@@ -1106,14 +1106,15 @@ void Engine::funcLoadSetting(FunctionParam *i_param, const StrExprArg &i_name)
 		tstringi dot_mayu;
 		for (size_t i = 0; i < MAX_MAYU_REGISTRY_ENTRIES; ++ i) {
 			_TCHAR buf[100];
-			_sntprintf(buf, NUMBER_OF(buf), _T(".mayu%d"), i);
+			_sntprintf(buf, NUMBER_OF(buf), _T(".mayu%d"),
+					static_cast<int>(i));
 			if (!reg.read(buf, &dot_mayu))
 				break;
 
 			tsmatch what;
 			if (regex_match(dot_mayu, what, split) &&
 					what.str(1) == i_name.eval()) {
-				reg.write(_T(".mayuIndex"), i);
+				reg.write(_T(".mayuIndex"), static_cast<int>(i));
 				goto success;
 			}
 		}
@@ -1448,9 +1449,9 @@ static BOOL CALLBACK enumDisplayMonitorsForWindowMonitorTo(
 	ep.m_monitorinfos.push_back(mi);
 
 	if (mi.dwFlags & MONITORINFOF_PRIMARY)
-		ep.m_primaryMonitorIdx = ep.m_monitors.size() - 1;
+		ep.m_primaryMonitorIdx = static_cast<int>(ep.m_monitors.size() - 1);
 	if (i_hmon == ep.m_hmon)
-		ep.m_currentMonitorIdx = ep.m_monitors.size() - 1;
+		ep.m_currentMonitorIdx = static_cast<int>(ep.m_monitors.size() - 1);
 
 	return TRUE;
 }
@@ -1607,7 +1608,7 @@ void Engine::funcWindowIdentify(FunctionParam *i_param)
 			{
 				Acquire a(&m_log, 1);
 				m_log << _T("HWND:\t") << std::hex
-				<< reinterpret_cast<int>(i_param->m_hwnd)
+				<< i_param->m_hwnd
 				<< std::dec << std::endl;
 			}
 			Acquire a(&m_log, 0);
@@ -1906,7 +1907,7 @@ void Engine::funcSetImeString(FunctionParam *i_param, const StrExprArg &i_data)
 		DisconnectNamedPipe(m_hookPipe);
 		ConnectNamedPipe(m_hookPipe, NULL);
 		error = WriteFile(m_hookPipe, i_data.eval().c_str(),
-						  i_data.eval().size() * sizeof(_TCHAR),
+						  (DWORD)(i_data.eval().size() * sizeof(_TCHAR)),
 						  &len, NULL);
 
 		//FlushFileBuffers(m_hookPipe);
@@ -1952,7 +1953,7 @@ public:
 			(*m_directSSTPServers)[id].m_path = value;
 		else if (member == _T("hwnd"))
 			(*m_directSSTPServers)[id].m_hwnd =
-				reinterpret_cast<HWND>(_ttoi(value.c_str()));
+				(HWND)(size_t)(_ttoi(value.c_str()));
 		else if (member == _T("name"))
 			(*m_directSSTPServers)[id].m_name = value;
 		else if (member == _T("keroname"))
@@ -2044,7 +2045,7 @@ void Engine::funcDirectSSTP(FunctionParam *i_param,
 
 	_TCHAR buf[100];
 	_sntprintf(buf, NUMBER_OF(buf), _T("HWnd: %d\r\n"),
-			   reinterpret_cast<int>(m_hwndAssocWindow));
+			   (int)(size_t)m_hwndAssocWindow);
 	request += buf;
 
 #ifdef _UNICODE
@@ -2066,7 +2067,7 @@ void Engine::funcDirectSSTP(FunctionParam *i_param,
 			COPYDATASTRUCT cd;
 			cd.dwData = 9801;
 #ifdef _UNICODE
-			cd.cbData = request_UTF_8.size();
+			cd.cbData = (DWORD)request_UTF_8.size();
 			cd.lpData = (void *)request_UTF_8.c_str();
 #else
 			cd.cbData = request.size();
@@ -2240,8 +2241,7 @@ void Engine::funcMouseHook(FunctionParam *i_param,
 		else
 			target = i_param->m_hwnd;
 
-		g_hookData->m_hwndMouseHookTarget =
-			reinterpret_cast<DWORD>(getToplevelWindow(target, &isMDI));
+		g_hookData->m_hwndMouseHookTarget = (DWORD)(size_t)getToplevelWindow(target, &isMDI);
 		break;
 		default:
 			g_hookData->m_hwndMouseHookTarget = NULL;

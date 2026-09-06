@@ -45,7 +45,7 @@ restart:
 						FocusOfThread *fot = &((*j).second);
 						Acquire a(&m_log, 1);
 						m_log << _T("RemoveThread") << std::endl;
-						m_log << _T("\tHWND:\t") << std::hex << (int)fot->m_hwndFocus
+						m_log << _T("\tHWND:\t") << std::hex << fot->m_hwndFocus
 						<< std::dec << std::endl;
 						m_log << _T("\tTHREADID:") << fot->m_threadId << std::endl;
 						m_log << _T("\tCLASS:\t") << fot->m_className << std::endl;
@@ -72,7 +72,7 @@ restart:
 					Acquire a(&m_log, 1);
 					m_log << _T("FocusChanged") << std::endl;
 					m_log << _T("\tHWND:\t")
-					<< std::hex << (int)m_currentFocusOfThread->m_hwndFocus
+					<< std::hex << m_currentFocusOfThread->m_hwndFocus
 					<< std::dec << std::endl;
 					m_log << _T("\tTHREADID:")
 					<< m_currentFocusOfThread->m_threadId << std::endl;
@@ -94,7 +94,7 @@ restart:
 					titleName[0] = _T('\0');
 				setFocus(hwndFore, threadId, className, titleName, true);
 				Acquire a(&m_log, 1);
-				m_log << _T("HWND:\t") << std::hex << reinterpret_cast<int>(hwndFore)
+				m_log << _T("HWND:\t") << std::hex << hwndFore
 				<< std::dec << std::endl;
 				m_log << _T("THREADID:") << threadId << std::endl;
 				m_log << _T("CLASS:\t") << className << std::endl;
@@ -770,7 +770,7 @@ unsigned int Engine::keyboardDetour(KBDLLHOOKSTRUCT *i_kid)
 		KEYBOARD_INPUT_DATA kid;
 
 		kid.UnitId = 0;
-		kid.MakeCode = i_kid->scanCode;
+		kid.MakeCode = (USHORT)i_kid->scanCode;
 		kid.Flags = 0;
 		if (i_kid->flags & LLKHF_UP) {
 			kid.Flags |= KEYBOARD_INPUT_DATA::BREAK;
@@ -853,7 +853,7 @@ unsigned int Engine::mouseDetour(WPARAM i_message, MSLLHOOKSTRUCT *i_mid)
 		case WM_MOUSEMOVE: {
 			LONG dx = i_mid->pt.x - g_hookData->m_mousePos.x;
 			LONG dy = i_mid->pt.y - g_hookData->m_mousePos.y;
-			HWND target = reinterpret_cast<HWND>(g_hookData->m_hwndMouseHookTarget);
+			HWND target = (HWND)(size_t)g_hookData->m_hwndMouseHookTarget;
 
 			LONG dr = 0;
 			dr += (i_mid->pt.x - m_msllHookCurrent.pt.x) * (i_mid->pt.x - m_msllHookCurrent.pt.x);

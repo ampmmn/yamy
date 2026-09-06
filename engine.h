@@ -677,7 +677,7 @@ public:
 		m_log << _T(", ") << i_message
 		<< _T(", 0x") << std::hex << i_wParam
 		<< _T(", 0x") << i_lParam << _T(") # hwnd = ")
-		<< reinterpret_cast<int>(i_hwnd) << _T(", ")
+		<< i_hwnd << _T(", ")
 		<< _T("message = ") << std::dec;
 		if (i_message == WM_COMMAND)
 			m_log << _T("WM_COMMAND, ");

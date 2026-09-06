@@ -33,6 +33,7 @@ class TR = std::char_traits<T>, class A = std::allocator<T> >
 class basic_msgbuf : public std::basic_streambuf<T, TR>, public SyncObject
 {
 public:
+	typedef std::allocator_traits<A> AllocatorTraits;
 	typedef std::basic_string<T, TR, A> String;	///
 	typedef std::basic_streambuf<T, TR> Super;	///
 
@@ -59,7 +60,7 @@ public:
 	basic_msgbuf(UINT i_messageId, HWND i_hwnd = 0)
 			: m_hwnd(i_hwnd),
 			m_messageId(i_messageId),
-			m_buf(m_allocator.allocate(SIZE, 0)),
+			m_buf(AllocatorTraits::allocate(m_allocator, SIZE)),
 			m_debugLevel(0),
 			m_msgDebugLevel(0) {
 		ASSERT(m_buf);
@@ -69,7 +70,7 @@ public:
 	///
 	~basic_msgbuf() {
 		sync();
-		m_allocator.deallocate(m_buf, SIZE);
+		AllocatorTraits::deallocate(m_allocator, m_buf, SIZE);
 	}
 
 	/// attach/detach a window
